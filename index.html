@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List App</title>
+
+<style>
+    body {
+        background-color: #5aeee7;
+        font-family: sans-serif;
+    }
+    hr {
+        border:  1px solid rgb(221, 219, 219);
+        width: 50%;
+        margin-left: 0;
+    }
+
+    input {
+
+        border: none;
+        padding: 4px;
+        border-radius: 3px;
+        width: 30%;
+        height: 20px;
+        outline: none;
+    }
+    
+    ul {
+        width: 30%;
+        padding-left: 0;
+    }
+    ul li {
+        list-style: none;
+        background-color: rgb(2, 185, 146);
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+    }
+    button {
+        border: none;
+        background-color: teal;
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: rgb(3, 93, 93);
+    }
+
+</style>
+
+
+
+</head>
+<body>
+    <h1 id="title">To do Tracker</h1>
+    <hr>
+    <form action="">
+        <input type="text" id="user-todo" placeholder="New todo" required>
+    </form>
+
+    <h2 id="todo-header">Todos : </h2>
+
+    <ul>
+    </ul>
+
+    <button id="clear">Clear All Button</button>
+
+
+    <script>
+
+    //step 1 buat variable
+
+    var form = document.querySelector('form');
+    var todoList = document.querySelector('ul');
+    var button = document.querySelector('button');
+    var input = document.getElementById('user-todo');
+
+    
+    //data untuk menampung isi todo yang akan dimasukan ke localstorage 
+    // var todosArray = [];
+
+    //cek apakah ada local storage
+    var todosArray = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
+
+    //set atau tambahkan localstorage dan masukan json.stringfy convert object menjadi string
+
+    localStorage.setItem('todos', JSON.stringify(todosArray));
+
+    //mengambil data dari local storage dan mengconvert nya menjadi object
+    var storage = JSON.parse(localStorage.getItem('todos'));
+     console.log(storage[0]);
+      
+
+
+    //step 2 tambahan event listener
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // fungsi ketika diklik submit tidak merefresh page
+
+        //masukan inputan ke dalam array  todosArray
+        todosArray.push(input.value);
+
+        // masukan data array kedalam local storage
+
+        localStorage.setItem('todos', JSON.stringify(todosArray));
+
+        toDoMaker(input.value); // ambil data yang di input
+        input.value = ''; //set value jadi kosong setelah diklik
+    });
+
+
+    var toDoMaker = function(text, index) {
+        var todo = document.createElement('li'); //buat element li
+        todo.textContent = text; //isi li dengan value inputan
+        todo.setAttribute('id', i);
+        todoList.appendChild(todo); //tambahan li kedalam ul
+    }
+
+    
+    for(var i = 0; i < storage.length; i++) {
+            toDoMaker(storage[i], i);
+        }
+
+    button.addEventListener('click', function(){
+        //kalo masih ada first chils terus delete
+        while(todoList.firstChild) {
+            todoList.removeChild(todoList.firstChild);
+            localStorage.clear('todos');
+        }
+    })
+
+    </script>
+
+
+
+</body>
+</html>
